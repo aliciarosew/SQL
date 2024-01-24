@@ -126,3 +126,14 @@ FROM tb
 JOIN actor
 ON tb.movie_id=actor.movie_id
 WHERE actor.actor='Johnny Depp';
+
+#9. List of both featuring both actors.
+
+SELECT tb.title, tb.year
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE actor.actor IN ('Helena Bonham Carter', 'Johnny Depp')
+GROUP BY tb.title
+HAVING COUNT(distinct actor.actor)>1
+ORDER BY tb.year asc;
