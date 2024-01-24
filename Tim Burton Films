@@ -1,0 +1,128 @@
+# This analysis utilized the following Tim Burtom feature film dataset
+
+CREATE TABLE tb (
+movie_id INTEGER PRIMARY KEY,
+title TEXT,
+year REAL,
+director TEXT,
+producer TEXT,
+writer TEXT);
+
+INSERT INTO tb (title, year, director, producer, writer)
+VALUES
+('Pee-wees Big Adventure', 1985, 'Y',' N', 'N'),
+('Beetlejuice', 1988, 'Y', 'N', 'N'),
+('Batman', 1989, 'Y', 'N', 'N'),
+('Edward Scissorhands', 1990, 'Y', 'Y', 'Y'),
+('Batman Returns', 1992, 'Y', 'Y', 'N'),
+('The Nightmare Before Christmas', 1993, 'N', 'Y', 'Y'),
+('Cabin Boy', 1994, 'N', 'Y', 'N'),
+('Ed Wood', 1994, 'Y', 'Y', 'N'),
+('Batman Forever', 1995, 'N', 'Y', 'N'),
+('James and the Giant Peach', 1996, 'N', 'Y', 'N'),
+('Mars Attacks!', 1996, 'Y', 'Y', 'N'),
+('Sleepy Hollow', 1999, 'Y', 'N', 'N'),
+('Planet of the Apes', 2001, 'Y', 'N', 'N'),
+('Big Fish', 2003, 'Y', 'N', 'N'),
+('Charlie and the Chocolate Factory', 2005, 'Y', 'N', 'N'),
+('Corpse Bride', 2005, 'Y', 'Y', 'Y'),
+('Sweeney Todd: The Demon Barber of Fleet Street', 2007, 'Y', 'N', 'N'),
+('9', 2009, 'N', 'Y', 'N'),
+('Alice in Wonderland', 2010, 'Y', 'N', 'N'),
+('Dark Shadows', 2012, 'Y', 'N', 'N'),
+('Abraham Lincoln: Vampire Hunter', 2012, 'N', 'Y', 'N'),
+('Frankenweenie', 2012, 'Y', 'Y', 'Y'),
+('Big Eyes', 2014, 'Y', 'Y', 'N'),
+('Alice Through the Looking Glass', 2016, 'N', 'Y', 'N'),
+('Miss Peregrines Home for Pecuiliar Children', 2016, 'Y', 'N', 'N'),
+('Dumbo', 2019, 'Y', 'Y', 'N'),
+('Beetlejuice 2', 2024, 'Y', 'Y', 'N');
+
+CREATE TABLE actor (
+movie_id REAL,
+actor TEXT,
+character TEXT);
+
+INSERT INTO actor (movie_id, actor, character)
+VALUES
+(13, 'Helena Bonham Carter', 'Ari'),
+(14, 'Helena Bonham Carter', 'Jennifer Hill/The Witch'),
+(15, 'Helena Bonham Carter', 'Mrs. Bucket'),
+(16, 'Helena Bonham Carter', 'Emily, the Corpse Bride'),
+(17, 'Helena Bonham Carter', 'Mrs. Lovett'),
+(19, 'Helena Bonham Carter', 'Red Queen'),
+(20, 'Helena Bonham Carter', 'Julia Hoffman'),
+(24, 'Helena Bonham Carter', 'Red Queen'),
+(4, 'Johnny Depp', 'Edward Scissorhands'),
+(8, 'Johnny Depp', 'Ed Wood'),
+(12, 'Johnny Depp', 'Ichabod Crane'),
+(15, 'Johnny Depp', 'Willy Wonka'),
+(16, 'Johnny Depp', 'Victor Van Dort'),
+(17, 'Johnny Depp', 'Sweeney Todd'),
+(19, 'Johnny Depp', 'The Mad Hatter'),
+(20, 'Johnny Depp', 'Barnabas Collins'),
+(24, 'Johnny Depp', 'Hatter Tarrant Hightop');
+
+# Analysis:
+
+#1. All Tim Burton feature films.
+
+SELECT *
+FROM tb;
+
+#2. What films included Bonham Carter or Depp and what character did they portray?
+
+SELECT tb.title AS Tim_Burton_film, actor.actor, actor.character
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+ORDER BY tb.title asc;
+
+#3. Total films both actors where in where Burton directed.
+
+SELECT actor.actor, COUNT(actor.actor) AS total_in_directed_films
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE tb.director='Y'
+group by actor;
+
+#4. Total films both actors where in where Burton produced.
+
+SELECT actor.actor, COUNT(actor.actor) AS total_in_produced_films
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE tb.producer='Y'
+group by actor;
+
+#5. Total films both actors where in where Burton wrote.
+
+SELECT actor.actor, COUNT(actor.actor) AS total_in_written_films
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE tb.writer='Y'
+group by actor;
+
+#6. Films where Burton directed, produced and wrote. 
+
+SELECT title AS Directed_Produced_Written
+FROM tb
+WHERE director='Y' AND writer='Y' AND producer='Y';
+
+#7. Only films featuring Bonham Carter. 
+
+SELECT tb.title AS HBC_films, tb.year
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE actor.actor='Helena Bonham Carter';
+
+#8. Only films featuring Depp.
+
+SELECT tb.title AS JD_films, tb.year
+FROM tb
+JOIN actor
+ON tb.movie_id=actor.movie_id
+WHERE actor.actor='Johnny Depp';
