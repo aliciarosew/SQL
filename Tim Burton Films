@@ -1,4 +1,4 @@
-# This analysis utilized the following Tim Burtom feature film dataset
+# This analysis utilized the following Tim Burton feature film dataset
 
 CREATE TABLE tb (
 movie_id INTEGER PRIMARY KEY,
@@ -127,7 +127,7 @@ JOIN actor
 ON tb.movie_id=actor.movie_id
 WHERE actor.actor='Johnny Depp';
 
-#9. List of both featuring both actors.
+#9. List of films featuring both actors.
 
 SELECT tb.title, tb.year
 FROM tb
